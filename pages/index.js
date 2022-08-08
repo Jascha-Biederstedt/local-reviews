@@ -1,6 +1,23 @@
 import Head from 'next/head';
 
-const Home = () => {
+import prisma from 'lib/prisma';
+import { getItems } from 'lib/data';
+
+export const getServerSideProps = async () => {
+  const restaurants = await getItems(prisma, 'restaurant');
+  const hotels = await getItems(prisma, 'hotel');
+  const thingsToDo = await getItems(prisma, 'thing-to-do');
+
+  return {
+    props: {
+      restaurants,
+      hotels,
+      thingsToDo,
+    },
+  };
+};
+
+const Home = ({ restaurants, hotels, thingsToDo }) => {
   return (
     <div>
       <Head>
@@ -12,34 +29,42 @@ const Home = () => {
       <div className='text-center '>
         <h1 className='mt-10 font-extrabold text-2xl'>The best in town</h1>
 
-        <div className='grid md:grid-cols-3'>
-          <div>
-            <h2 className='mt-10 font-bold'>Restaurants</h2>
+        <div className='flex flex-col md:grid md:grid-cols-3'>
+          {restaurants && (
+            <div>
+              <h2 className='mt-10 font-bold'>Restaurants</h2>
 
-            <ol className='mt-4 list-inside list-decimal'>
-              <li>Restaurant 1</li>
-              <li>Restaurant 2</li>
-              <li>Restaurant 3</li>
-            </ol>
-          </div>
-          <div>
-            <h2 className='mt-10 font-bold'>Hotels</h2>
+              <ol className='mt-4 list-inside list-decimal'>
+                {restaurants.map((item, index) => (
+                  <li key={index}>{item.name}</li>
+                ))}
+              </ol>
+            </div>
+          )}
 
-            <ol className='mt-4 list-inside list-decimal'>
-              <li>Hotel 1</li>
-              <li>Hotel 2</li>
-              <li>Hotel 3</li>
-            </ol>
-          </div>
-          <div>
-            <h2 className='mt-10 font-bold'>Things to do</h2>
+          {hotels && (
+            <div>
+              <h2 className='mt-10 font-bold'>Hotels</h2>
 
-            <ol className='mt-4 list-inside list-decimal'>
-              <li>Thing 1</li>
-              <li>Thing 2</li>
-              <li>Thing 3</li>
-            </ol>
-          </div>
+              <ol className='mt-4 list-inside list-decimal'>
+                {hotels.map((item, index) => (
+                  <li key={index}>{item.name}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {thingsToDo && (
+            <div>
+              <h2 className='mt-10 font-bold'>Things to do</h2>
+
+              <ol className='mt-4 list-inside list-decimal'>
+                {thingsToDo.map((item, index) => (
+                  <li key={index}>{item.name}</li>
+                ))}
+              </ol>
+            </div>
+          )}
         </div>
       </div>
     </div>
