@@ -16,7 +16,12 @@ const Item = ({ item }) => {
     <div className='text-center'>
       <h1 className='mt-10 font-extrabold text-2xl'>{item.name}</h1>
       <h2 className='mt-10 font-bold'>{item.description}</h2>
-      {item.rating !== 0 && <h2 className='mt-10 font-bold'>{item.rating}</h2>}
+      {item.rating !== 0 && (
+        <h2 className='mt-10 font-bold'>
+          Rating: {item.rating / 10} / 5{' '}
+          {[...Array(Math.round(item.rating / 10))].map(() => '⭐️ ')}
+        </h2>
+      )}
     </div>
   );
 };
