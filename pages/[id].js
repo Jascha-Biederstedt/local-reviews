@@ -30,6 +30,19 @@ const Item = ({ item }) => {
         </h2>
       )}
 
+      {item.reviews.length > 0 && (
+        <div>
+          <h2 className='mt-10 mb-5 font-extrabold text-lg'>Reviews</h2>
+
+          {item.reviews.map(review => (
+            <div className='mb-3'>
+              <p>{[...Array(Math.round(review.rating))].map(() => '⭐️ ')}</p>
+              <p>{review.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
       <h2 className='mt-10 font-extrabold text-lg'>Add a new review</h2>
 
       <form
